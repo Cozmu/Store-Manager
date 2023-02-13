@@ -1,0 +1,58 @@
+const { expect } = require('chai');
+const sinon = require('sinon');
+const { allProducts, productById } = require('./mocks/products.service.mock');
+const { productsService } = require('../../../src/services');
+const { productsModel } = require('../../../src/models');
+
+
+describe('SERVICE - Desenvolva testes que cubram no mínimo 5% das camadas da sua aplicação', () => {
+  describe('SERVICE - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 5%', () => {
+    it('Verifica se através do caminho /products, todos os produtos devem ser retornados', async function () {
+      sinon.stub(productsModel, 'findAllProducts').resolves(allProducts);
+      const result = await productsService.getAllProducts();
+
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal([
+        {
+          "id": 1,
+          "name": "Martelo de Thor"
+        },
+        {
+          "id": 2,
+          "name": "Traje de encolhimento"
+        },
+        {
+          "id": 3,
+          "name": "Escudo do Capitão América"
+        }
+      ]);
+    });
+
+    it('Verifica se através do caminho /products/:id, apenas o produto com o id presente na URL deve ser retornado', async function () {
+      sinon.stub(productsModel, 'findProductById').resolves(productById);
+      const result = await productsService.getProductById(1);
+      
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal({
+        "id": 1,
+        "name": "Martelo de Thor"
+      });
+    });
+
+    it('Verifica se não é possível listar um produto que não existe', async function () {
+      const result = await productsService.getProductById(76);
+      expect(result.type).to.be.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.deep.equal('Product not found');
+    });
+
+    it('Verifique se não é possível listar um produto com id invalido', async function () {
+      const result = await productsService.getProductById('id');
+      expect(result.type).to.be.equal('INVALID_VALUE');
+      expect(result.message).to.deep.equal( '"value" must be a number' );
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});
