@@ -59,15 +59,15 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 5% das camadas da su
 
 describe('SERVICE - Desenvolva testes que cubram no mínimo 10% das camadas da sua aplicação', function () {
   describe('SERVICE -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 10%', function () {
-    // it('Verifica se e possível adicionar um produto na tabela', async function () {
-    //   sinon.stub(productsModel, 'insertProduct').resolves(4);
-    //   const result = await productsService.registerProduct('newProduct');
-    //   expect(result.type).to.be.equal(null);
-    //   expect(result.message).to.deep.equal({
-    //     id: 4,
-    //     name: "newProduct"
-    //   });
-    // });
+    it('Verifica se e possível adicionar um produto na tabela', async function () {
+      sinon.stub(productsModel, 'insertProduct').resolves(4);
+      const result = await productsService.registerProduct('newProduct');
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal({
+        id: 4,
+        name: "newProduct"
+      });
+    });
 
     it('Verifica se não e possível adicionar um produto na tabela com nome que tenha menos de 5 caracteres', async function () {
       const result = await productsService.registerProduct('new');
