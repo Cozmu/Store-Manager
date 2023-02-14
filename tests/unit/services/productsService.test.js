@@ -1,12 +1,12 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { allProducts, productById } = require('./mocks/products.service.mock');
+const { allProducts, productById, newProduct} = require('./mocks/products.service.mock');
 const { productsService } = require('../../../src/services');
 const { productsModel } = require('../../../src/models');
 
 
-describe('SERVICE - Desenvolva testes que cubram no mínimo 5% das camadas da sua aplicação', () => {
-  describe('SERVICE - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 5%', () => {
+describe('SERVICE - Desenvolva testes que cubram no mínimo 5% das camadas da sua aplicação', function () {
+  describe('SERVICE - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 5%', function () {
     it('Verifica se através do caminho /products, todos os produtos devem ser retornados', async function () {
       sinon.stub(productsModel, 'findAllProducts').resolves(allProducts);
       const result = await productsService.getAllProducts();
@@ -49,6 +49,30 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 5% das camadas da su
       const result = await productsService.getProductById('id');
       expect(result.type).to.be.equal('INVALID_VALUE');
       expect(result.message).to.deep.equal( '"value" must be a number' );
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});
+
+describe('SERVICE - Desenvolva testes que cubram no mínimo 10% das camadas da sua aplicação', function () {
+  describe('SERVICE -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 10%', function () {
+    // it('Verifica se e possível adicionar um produto na tabela', async function () {
+    //   sinon.stub(productsModel, 'insertProduct').resolves(4);
+    //   const result = await productsService.registerProduct('newProduct');
+    //   expect(result.type).to.be.equal(null);
+    //   expect(result.message).to.deep.equal({
+    //     id: 4,
+    //     name: "newProduct"
+    //   });
+    // });
+
+    it('Verifica se não e possível adicionar um produto na tabela com nome que tenha menos de 5 caracteres', async function () {
+      const result = await productsService.registerProduct('new');
+      expect(result.type).to.be.equal('INVALID_NAME');
+      expect(result.message).to.deep.equal('"name" length must be at least 5 characters long');
     });
 
     afterEach(function () {

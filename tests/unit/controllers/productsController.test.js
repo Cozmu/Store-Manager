@@ -5,9 +5,10 @@ const sinonChai = require('sinon-chai');
 const { expect } = chai;
 chai.use(sinonChai);
 
+const validateName = require('../../../src/middlewares/validateName');
 const { productsController } = require('../../../src/controllers'); 
 const { productsService } = require('../../../src/services');
-const { allProducts, productById } = require('./mocks/products.controller.mocks');
+const { allProducts, productById, newProduct } = require('./mocks/products.controller.mocks');
 
 describe('CONTROLLER - Desenvolva testes que cubram no mínimo 5% das camadas da sua aplicação', function () {
   describe('CONTROLLER - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 5%', function () {
@@ -73,6 +74,60 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 5% das camadas da
 
       expect(res.status).to.have.been.calledWith(404);
       expect(res.json).to.have.been.calledWith({ message: "Product not found" });
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});
+
+describe('CONTROLLER - Desenvolva testes que cubram no mínimo 10% das camadas da sua aplicação', function () {
+  describe('CONTROLLER -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 10%', function () {
+    it('Verifica se e possível adicionar um produto na tabela', async function () {
+      const req = { body: { name: 'NewProduct' } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon
+        .stub(productsService, 'registerProduct')
+        .resolves({ type: null, message: newProduct });
+      
+      await productsController.registerProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(201);
+      expect(res.json).to.have.been.calledWith(newProduct);
+    });
+
+    it('Verifica se não e possível adicionar um produto na tabela com nome que tenha menos de 5 caracteres', async function () {
+      const req = { body: { name: 'New' } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon
+        .stub(productsService, 'registerProduct')
+        .resolves({ type: 'INVALID_NAME', message: '"name" length must be at least 5 characters long' });
+      
+      await productsController.registerProduct(req, res);
+      
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: '"name" length must be at least 5 characters long'});
+    });
+
+    it('Verifica se não e possível adicionar um produto na tabela sem o campo "name" ', async function () {
+      const req = { body: { name: '' } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await validateName(req, res);
+
+      expect(res.status).to.have.been.calledWith(400);
+      expect(res.json).to.have.been.calledWith({ message: '"name" is required' });
     });
 
     afterEach(function () {
