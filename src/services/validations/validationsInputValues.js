@@ -20,14 +20,23 @@ const validateName = (name) => {
 
 const validateSalesRequired = (sales) => {
   const { error } = addValidateSales.validate(sales);
+  console.log();
   if (error) {
-    return { type: 'INVALID_INPUT', message: error.message };
+    return {
+      type: error.details[0].type === 'number.min' ? 'INVALID_QUANTITY' : 'INVALID_INPUT',
+      message: error.message,
+    };
   }
   return { type: null, message: '' };
+};
+
+const validateProduct = async () => {
+  
 };
 
 module.exports = {
   validateSalesRequired,
   validateId,
   validateName,
+  validateProduct,
 };

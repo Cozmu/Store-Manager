@@ -6,7 +6,7 @@ const validName = Joi.string().min(5);
 const addValidateSales = Joi.object().keys({
   productId: Joi.number().min(1).required(),
   quantity: Joi.number().min(1).required(),
-}).message({
+}).messages({
   'any.required': '"{#key}" is required',
   'number.min': '"{#key}" must be greater than or equal to 1',
 });
