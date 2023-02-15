@@ -32,5 +32,9 @@ describe('MODEL - Desenvolva testes que cubram no mínimo 10% das camadas da sua
       const result = await productsModel.insertProduct(newProduct.name);
       expect(result).to.be.equal(4);
     });
+    
+    afterEach(function () {
+      sinon.restore();
+    });
   });
 });
