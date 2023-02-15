@@ -3,7 +3,7 @@ const connection = require('./connection');
 
 const findSaleById = async (idSale) => {
   const [[result]] = await connection.execute(
-    'SELECT * FROM StorageManager.sales WHERE id = ?',
+    'SELECT * FROM StoreManager.sales WHERE id = ?',
     [idSale],
   );
   return result;
@@ -18,7 +18,7 @@ const insertSale = async () => {
 
 const insertSaleProduct = async (saleId, productId, quantity) => {
   const [result] = await connection.execute(
-    'INSERT INTO StoreManager.sales_products (product_id, quantity) VALUE (?, ?, ?)',
+    'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUE (?, ?, ?)',
     [saleId, productId, quantity], 
   );
   return result;
