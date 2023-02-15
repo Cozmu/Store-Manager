@@ -20,7 +20,6 @@ const validateName = (name) => {
 
 const validateSalesRequired = (sales) => {
   const { error } = addValidateSales.validate(sales);
-  console.log();
   if (error) {
     return {
       type: error.details[0].type === 'number.min' ? 'INVALID_QUANTITY' : 'INVALID_INPUT',
