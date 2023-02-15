@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post(
   '/',
-
+  salesController.registerSale,
 );
 
 module.exports = router;

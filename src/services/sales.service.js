@@ -1,3 +1,10 @@
 const { salesModel } = require('../models');
+const validate = require('./validations/validationsInputValues');
 
-module.exports = {};
+const registerSale = async (body) => {
+  await body.map((sales) => 'legal');
+};
+
+module.exports = {
+  registerSale,
+};
