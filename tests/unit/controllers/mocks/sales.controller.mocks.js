@@ -88,6 +88,18 @@ const allSales = [
   }
 ];
 
+const saleById = [
+  {
+    "date": "2023-02-16T20:41:50.000Z",
+    "productId": 1,
+    "quantity": 5
+  },
+  {
+    "date": "2023-02-16T20:41:50.000Z",
+    "productId": 2,
+    "quantity": 10
+  }
+]
 
 module.exports = {
   invalidInput,
@@ -96,4 +108,5 @@ module.exports = {
   newSale,
   requestNewSale, 
   allSales,
+  saleById
 };

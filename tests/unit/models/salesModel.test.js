@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesModel } = require('../../../src/models')
 const connection = require('../../../src/models/connection');
+const { allSales, saleById } = require('./mocks/sales.model.mock');
 
 describe('MODEL - Desenvolva testes que cubram no mínimo 15% das camadas da sua aplicação', function () {
   describe('MODEL - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 15%', function () {
@@ -17,6 +18,68 @@ describe('MODEL - Desenvolva testes que cubram no mínimo 15% das camadas da sua
       expect(result.insertId).to.be.equal(0);
     });
     
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});
+
+describe('MODEL - Desenvolva testes que cubram no mínimo 20% das camadas da sua aplicação', function () {
+  describe('MODEL - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 20%', function () {
+    it('Verifica se é possível listar todas as vendas na rota /sales com metodo "GET"', async function () { 
+      sinon.stub(connection, 'execute').resolves([allSales]);
+      const result = await salesModel.findAllSalesProducts();
+      expect(result).to.be.deep.equal([
+        {
+          "saleId": 1,
+          "productId": 1,
+          "date": "2023-02-16T18:32:28.000Z",
+          "quantity": 5
+        },
+        {
+          "saleId": 1,
+          "productId": 2,
+          "date": "2023-02-16T18:32:28.000Z",
+          "quantity": 10
+        },
+        {
+          "saleId": 2,
+          "productId": 3,
+          "date": "2023-02-16T18:32:28.000Z",
+          "quantity": 15
+        },
+        {
+          "saleId": 3,
+          "productId": 1,
+          "date": "2023-02-16T18:34:50.000Z",
+          "quantity": 1
+        },
+        {
+          "saleId": 3,
+          "productId": 2,
+          "date": "2023-02-16T18:34:50.000Z",
+          "quantity": 5
+        }
+      ]);
+    });
+
+    it('Verifique se é possível listar uma venda específica com sucesso na rota /sales/:id com metodo "GET"', async function () {
+      sinon.stub(connection, 'execute').resolves([saleById]);
+      const result = await salesModel.findSalesProductsById(1);
+      expect(result).to.be.deep.equal([
+        {
+          "date": "2023-02-16T20:41:50.000Z",
+          "productId": 1,
+          "quantity": 5
+        },
+        {
+          "date": "2023-02-16T20:41:50.000Z",
+          "productId": 2,
+          "quantity": 10
+        }
+      ])
+    });
+
     afterEach(function () {
       sinon.restore();
     });

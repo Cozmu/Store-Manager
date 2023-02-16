@@ -13,7 +13,8 @@ const {
   newSale,
   productNotFound,
   requestNewSale,
-  allSales
+  allSales,
+  saleById
 } = require('./mocks/sales.controller.mocks');
 
 describe('CONTROLLER - Desenvolva testes que cubram no mínimo 15% das camadas da sua aplicação', function () {
@@ -91,7 +92,7 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 15% das camadas d
 
 describe('CONTROLLER - Desenvolva testes que cubram no mínimo 20% das camadas da sua aplicação', function () {
   describe('CONTROLLER - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 20%', function () {
-    it('Verifica se é possível listar todas as vendas na tora /sales com metodo "GET"', async function () {
+    it('Verifica se é possível listar todas as vendas na rota /sales com metodo "GET"', async function () {
       const req = {};
       const res = {};
 
@@ -136,6 +137,53 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 20% das camadas d
           "quantity": 5
         }
       ]);
+    });
+
+    it('Verifique se é possível listar uma venda específica com sucesso na rota /sales/:id com metodo "GET"', async function () {
+      const req = { params: { id: 1 }};
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'getSalesProductsById')
+        .resolves({ type: null, message: saleById });
+
+      await salesController.listSalesById(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith([
+        {
+          "date": "2023-02-16T20:41:50.000Z",
+          "productId": 1,
+          "quantity": 5
+        },
+        {
+          "date": "2023-02-16T20:41:50.000Z",
+          "productId": 2,
+          "quantity": 10
+        }
+      ]);
+    });
+
+    it('Verifique se não é possível listar uma venda que não existe', async function () {
+      const req = { params: { id: 999 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'getSalesProductsById')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+
+      await salesController.listSalesById(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    });
+
+    afterEach(function () {
+      sinon.restore();
     });
   });
 }); 
