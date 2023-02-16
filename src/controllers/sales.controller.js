@@ -8,4 +8,20 @@ const registerSale = async (req, res) => {
   return res.status(201).json(message);
 };
 
-module.exports = { registerSale };
+const listSales = async (req, res) => {
+  const { message } = await salesService.getAllSalesProducts();
+  return res.status(200).json(message);
+};
+
+const listSalesById = async (req, res) => {
+  const { id } = req.params;
+  const { type, message } = await salesService.getSalesProductsById(id);
+  if (type) return res.status(404).json({ message });
+  return res.status(200).json(message);
+};
+
+module.exports = {
+  registerSale,
+  listSales,
+  listSalesById,
+};

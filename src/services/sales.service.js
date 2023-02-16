@@ -22,6 +22,21 @@ const registerSale = async (body) => {
   return { type: null, message: { id: salesId, itemsSold: body } };
 };
 
+const getAllSalesProducts = async () => {
+  const resultAllSalesProducts = await salesModel.findAllSalesProducts(); 
+  return { type: null, message: resultAllSalesProducts };
+};
+
+const getSalesProductsById = async (saleID) => {
+  const resultSalesProductsById = await salesModel.findSalesProductsById(saleID);
+  if (resultSalesProductsById.length < 1) {
+    return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  }
+  return { type: null, message: resultSalesProductsById };
+};
+
 module.exports = {
   registerSale,
+  getAllSalesProducts,
+  getSalesProductsById,
 };
