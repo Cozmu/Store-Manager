@@ -35,6 +35,7 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 15% das camadas da s
     });
 
     it('Verifique se é possível cadastrar uma venda com sucesso', async function () {
+      sinon.stub(salesModel, 'insertSale').resolves(3);
       const result = await salesService.registerSale(requestNewSale);
 
       expect(result.type).to.be.equal(null);

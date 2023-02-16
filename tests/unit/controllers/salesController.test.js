@@ -6,7 +6,7 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 const { salesController } = require('../../../src/controllers');
-const salesService = require('../../../src/services/sales.service');
+const { salesService } = require('../../../src/services');
 const {
   invalidInput,
   invalidQuantity,
@@ -67,7 +67,6 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 15% das camadas d
     });
 
     it('Verifique se é possível cadastrar uma venda com sucesso', async function () {
-      sinon.restore();
       const req = { body: requestNewSale };
       const res = {};
 
@@ -77,7 +76,6 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 15% das camadas d
         .stub(salesService, 'registerSale')
         .resolves({ type: null, message: newSale });
         
-      // console.log(newSale);
       await salesController.registerSale(req, res);
 
 
@@ -86,7 +84,6 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 15% das camadas d
     });
 
     afterEach(function () {
-      // salesService.registerSale.restore();
       sinon.restore();
     });
   });
