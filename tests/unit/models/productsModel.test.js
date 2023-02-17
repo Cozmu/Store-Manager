@@ -52,3 +52,17 @@ describe('MODEL - Desenvolva testes que cubram no mínimo 25% das camadas da sua
     });
   });
 });
+
+describe('MODEL - Desenvolva testes que cubram no mínimo 30% das camadas da sua aplicação', function () {
+  describe('MODEL - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 30%', function () {
+    it('Verifique se é possível deletar um produto com sucesso', async function () {
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      const result = await productsModel.deleteModelProduct(1);
+      expect(result).to.be.equal(1);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

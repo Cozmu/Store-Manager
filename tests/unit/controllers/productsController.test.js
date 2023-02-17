@@ -212,3 +212,42 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 25% das camadas d
     });
   });
 });
+
+describe('CONTROLLER - Desenvolva testes que cubram no mínimo 30% das camadas da sua aplicação', function () {
+  describe('CONTROLLER - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 30%', function () {
+    it('Verifique se não é possível deletar um produto que não existe', async function () {
+      const req = { params: { id: 999 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'deleteServiceProduct')
+        .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' })
+      
+      await productsController.deleteControllerProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    });
+
+    it('Verifique se é possível deletar um produto com sucesso', async function () {
+      const req = { params: { id: 1 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'deleteServiceProduct')
+        .resolves({ type: null , message: '' })
+
+      await productsController.deleteControllerProduct(req, res); // Possivel erro
+
+      expect(res.status).to.have.been.calledWith(204);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

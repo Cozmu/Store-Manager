@@ -36,7 +36,7 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 15% das camadas da s
       expect(result.message).to.be.equal('Product not found');
     });
 
-    it('Verifique se é possível cadastrar uma venda com sucesso', async function () {
+    it('Verifique se é possível cadastrar uma venda com sucesso', async function () { // erro aqui talvez
       sinon.stub(salesModel, 'insertSale').resolves(3);
       sinon.stub(salesModel, 'insertSaleProduct').resolves();
       const result = await salesService.registerSale(requestNewSale);
