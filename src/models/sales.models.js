@@ -35,11 +35,29 @@ const insertSaleProduct = async (saleId, productId, quantity) => {
     'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUE (?, ?, ?)',
     [saleId, productId, quantity], 
   );
-  // console.log(result);
   return result;
 };
 
+const findSaleById = async (id) => {
+  const [result] = await connection.execute(
+    'SELECT * FROM StoreManager.sales WHERE id = ?',
+    [id],
+  );
+  console.log(result);
+  return result;
+};
+
+const deleteModelSale = async (id) => {
+  const [{ affectedRows }] = await connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?',
+    [id],
+  );
+  return affectedRows;
+};
+
 module.exports = {
+  findSaleById,
+  deleteModelSale,
   insertSaleProduct,
   insertSale,
   findAllSalesProducts,
