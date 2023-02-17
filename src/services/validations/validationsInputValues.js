@@ -12,7 +12,7 @@ const validateName = (name) => {
   if (error) {
     return {
       type: error.details[0].type === 'string.min' ? 'INVALID_NAME' : 'NAME_IS_REQUIRED',
-    message: error.message,
+      message: error.message,
     }; 
   }
   return { type: null, message: '' };

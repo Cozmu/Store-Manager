@@ -80,3 +80,33 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 10% das camadas da s
     });
   });
 });
+
+describe('SERVICE - Desenvolva testes que cubram no mínimo 25% das camadas da sua aplicação', function () {
+  describe('SERVICE -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 25%', function () {
+    it('Verifica se é possível atualizar um produto na rota /products/:id com o metodo "PUT"', async function () {
+      sinon.stub(productsModel, 'updateModelProtuct').resolves(1);
+      const result = await productsService.updateServiceProtuct(1, 'Produto Teste');
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.be.deep.equal({ id: 1, name: 'Produto Teste' });
+    });
+    it('Verifica se não é possível atualizar um produto sem a chave "name"', async function () {
+      const result = await productsService.updateServiceProtuct(1);
+      expect(result.type).to.be.equal('NAME_IS_REQUIRED');
+      expect(result.message).to.deep.equal('"name" is required');
+    });
+    it('Verifica se não é possível atualizar um produto com a chave "name" com menos de 5 caracteres', async function () {
+      const result = await productsService.updateServiceProtuct(1, 'test');
+      expect(result.type).to.be.equal('INVALID_NAME');
+      expect(result.message).to.deep.equal('"name" length must be at least 5 characters long');
+    });
+    it('Verifica se não é possível atualizar um produto inexistente na tabela', async function () {
+      const result = await productsService.updateServiceProtuct(999, 'Produto Teste');
+      expect(result.type).to.be.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.be.deep.equal('Product not found');
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

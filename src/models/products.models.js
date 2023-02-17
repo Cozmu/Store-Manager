@@ -31,7 +31,6 @@ const updateModelProtuct = async (id, name) => {
     SET name = ? WHERE id = ?`,
     [name, id],
   );
-  // console.log(affectedRows);
   return affectedRows;
 };
 

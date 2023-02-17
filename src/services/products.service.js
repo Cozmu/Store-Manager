@@ -27,6 +27,7 @@ const updateServiceProtuct = async (id, name) => {
   const error = validate.validateName(name);
   if (error.type) return error;
   const checkProduct = await productsModel.findProductById(id);
+  console.log(checkProduct);
   if (!checkProduct) {
     return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
   }
