@@ -44,8 +44,32 @@ const deleteServiceSale = async (saleID) => {
   return { type: null, message: '' };
 };
 
+const updateServiceSale = async (id, body) => {
+  const validationArr = body.map((sales) => validate.validateSalesRequired(sales));
+  const performValidation = validationArr.find((sale) => sale.type);
+  if (performValidation) {
+    return performValidation;
+  }
+
+  const checkProduct = await Promise
+    .all(body.map(({ productId }) => productsModel.findProductById(productId)));
+  if (checkProduct.includes(undefined)) {
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+  }
+
+  const checkSale = await salesModel.findSaleById(id);
+  if (checkSale.length < 1) {
+    return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  }
+
+  await Promise.all(body
+    .map(({ productId, quantity }) => salesModel.updateModelSale(quantity, productId, id)));
+  return { type: null, message: { saleId: id, itemsUpdated: body } };
+};
+
 module.exports = {
   deleteServiceSale,
+  updateServiceSale,
   registerSale,
   getAllSalesProducts,
   getSalesProductsById,

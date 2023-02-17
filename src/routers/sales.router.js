@@ -18,6 +18,11 @@ router.get(
   salesController.listSalesById,
 );
 
+router.put(
+  '/:id',
+  salesController.updateControllerSale,
+);
+
 router.delete(
   '/:id',
   salesController.deleteControllerSale,
