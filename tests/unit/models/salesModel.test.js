@@ -85,3 +85,24 @@ describe('MODEL - Desenvolva testes que cubram no mínimo 20% das camadas da sua
     });
   });
 });
+
+describe('MODEL - Desenvolva testes que cubram no mínimo 35% das camadas da sua aplicação', function () {
+  describe('MODEL - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 35%', function () {
+    it('Verifique se é possível deletar uma venda com sucesso', async function () {
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      const result = await salesModel.deleteModelSale(1);
+      expect(result).to.be.equal(1);
+    });
+
+    it('Verifique se ao passar um id invalido e chamado a função de listagem de vendas', async function () {
+      sinon.stub(connection, 'execute').resolves([{ id: 1, date: '2023-02-17T18:35:37.000Z' }]);
+      const result = await salesModel.findSaleById(1);
+      expect(result).to.be.deep.equal({ id: 1, date: '2023-02-17T18:35:37.000Z' });
+
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

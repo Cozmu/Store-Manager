@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesService } = require('../../../src/services');
-const { salesModel } = require('../../../src/models');
+const { salesModel, productsModel } = require('../../../src/models');
 const {
   invalidInput,
   invalidQuantity,
@@ -36,7 +36,8 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 15% das camadas da s
       expect(result.message).to.be.equal('Product not found');
     });
 
-    it('Verifique se é possível cadastrar uma venda com sucesso', async function () { // erro aqui talvez
+    it('Verifique se é possível cadastrar uma venda com sucesso', async function () {
+      sinon.stub(productsModel, 'findProductById').resolves([{ id: 2, name: 'Traje de encolhimento' }, { id: 1, name: 'Martelo de Thor' }])
       sinon.stub(salesModel, 'insertSale').resolves(3);
       sinon.stub(salesModel, 'insertSaleProduct').resolves();
       const result = await salesService.registerSale(requestNewSale);
@@ -114,6 +115,28 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 20% das camadas da s
       const result = await salesService.getSalesProductsById(999);
       expect(result.type).to.be.equal('SALE_NOT_FOUND');
       expect(result.message).to.be.equal('Sale not found');
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});
+
+describe('SERVICE - Desenvolva testes que cubram no mínimo 35% das camadas da sua aplicação', function () {
+  describe('SERVICE - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 35%', function () {
+    it('Verifique se é possível deletar uma venda com sucesso', async function () {
+      sinon.stub(salesModel, 'findSaleById').resolves([{ id: 1, date: '2023-02-17T18:35:37.000Z' }]);
+      sinon.stub(salesModel, 'deleteModelSale').resolves(1);
+      const result = await salesService.deleteServiceSale(1);
+      expect(result.type).to.be.equal(null);
+    });
+
+    it('Verifique se não é possível deletar uma venda que não existe', async function () {
+      sinon.stub(salesModel, 'findSaleById').resolves([]);
+      const result = await salesService.deleteServiceSale(999);
+      expect(result.type).to.be.equal('SALE_NOT_FOUND');
+      expect(result.message).to.be.deep.equal('Sale not found');
     });
 
     afterEach(function () {

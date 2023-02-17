@@ -187,3 +187,43 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 20% das camadas d
     });
   });
 }); 
+
+describe('CONTROLLER - Desenvolva testes que cubram no mínimo 35% das camadas da sua aplicação', function () {
+  describe('CONTROLLER - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 35%', function () {
+    it('Verifique se não é possível deletar uma venda que não existe', async function () {
+      const req = { params: { id: 999 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'deleteServiceSale')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' })
+      
+      await salesController.deleteControllerSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    });
+
+
+    it('Verifique se é possível deletar uma venda com sucesso', async function () {
+      const req = { params: { id: 1 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.send = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'deleteServiceSale')
+        .resolves({ type: null, message: '' })
+
+      await salesController.deleteControllerSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

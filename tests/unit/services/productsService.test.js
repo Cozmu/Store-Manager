@@ -84,9 +84,10 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 10% das camadas da s
 describe('SERVICE - Desenvolva testes que cubram no mínimo 25% das camadas da sua aplicação', function () {
   describe('SERVICE -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 25%', function () {
     it('Verifica se é possível atualizar um produto na rota /products/:id com o metodo "PUT"', async function () {
+      sinon.stub(productsModel, 'findProductById').resolves([{ id: 1, name: 'Martelo de Thor' }])
       sinon.stub(productsModel, 'updateModelProtuct').resolves(1);
       const result = await productsService.updateServiceProtuct(1, 'Produto Teste');
-      expect(result.type).to.be.equal(null); // erro nao stuba
+      expect(result.type).to.be.equal(null); 
       expect(result.message).to.be.deep.equal({ id: 1, name: 'Produto Teste' });
     });
     it('Verifica se não é possível atualizar um produto sem a chave "name"', async function () {
@@ -114,6 +115,7 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 25% das camadas da s
 describe('SERVICE - Desenvolva testes que cubram no mínimo 30% das camadas da sua aplicação', function () {
   describe('SERVICE - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 30%', function () {
     it('Verifique se é possível deletar um produto com sucesso', async function () {
+      sinon.stub(productsModel, 'findProductById').resolves([{ id: 1, name: 'Martelo de Thor' }])
       sinon.stub(productsModel, 'deleteModelProduct').resolves(1);
       const result = await productsService.deleteServiceProduct(1);
       expect(result.type).to.be.equal(null);

@@ -43,7 +43,6 @@ const findSaleById = async (id) => {
     'SELECT * FROM StoreManager.sales WHERE id = ?',
     [id],
   );
-  console.log(result);
   return result;
 };
 
