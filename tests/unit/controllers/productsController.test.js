@@ -236,12 +236,12 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 30% das camadas d
       const res = {};
 
       res.status = sinon.stub().returns(res);
-      res.json = sinon.stub().returns();
+      res.send = sinon.stub().returns();
       sinon
         .stub(productsService, 'deleteServiceProduct')
         .resolves({ type: null , message: '' })
 
-      await productsController.deleteControllerProduct(req, res); // Possivel erro
+      await productsController.deleteControllerProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(204);
     });

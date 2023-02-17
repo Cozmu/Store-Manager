@@ -1,5 +1,4 @@
 const { productsService } = require('../services');
-// const errorMap = require('../utils/errorMap');
 
 const listProducts = async (req, res) => {
   const { message } = await productsService.getAllProducts();
