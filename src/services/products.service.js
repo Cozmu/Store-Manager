@@ -27,7 +27,6 @@ const updateServiceProtuct = async (id, name) => {
   const error = validate.validateName(name);
   if (error.type) return error;
   const checkProduct = await productsModel.findProductById(id);
-  console.log(checkProduct);
   if (!checkProduct) {
     return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
   }
@@ -35,7 +34,17 @@ const updateServiceProtuct = async (id, name) => {
   return { type: null, message: { id, name } };
 };
 
+const deleteServiceProduct = async (id) => {
+  const checkProduct = await productsModel.findProductById(id);
+  if (!checkProduct) {
+    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+  }
+  await productsModel.deleteModelProduct(id);
+  return { type: null, message: '' };
+};
+
 module.exports = {
+  deleteServiceProduct,
   registerProduct,
   getAllProducts,
   getProductById,
