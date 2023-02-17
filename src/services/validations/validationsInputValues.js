@@ -11,8 +11,8 @@ const validateName = (name) => {
   const { error } = validName.validate(name);
   if (error) {
     return {
-    type: 'INVALID_NAME',
-    message: '"name" length must be at least 5 characters long',
+      type: error.details[0].type === 'string.min' ? 'INVALID_NAME' : 'NAME_IS_REQUIRED',
+    message: error.message,
     }; 
   }
   return { type: null, message: '' };
