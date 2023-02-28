@@ -101,12 +101,30 @@ const saleById = [
   }
 ];
 
+const validProduct = [
+  { id: 1, name: 'Martelo de Thor' },
+  { id: 2, name: 'Traje de encolhimento' }
+];
+
+const requestUpdateSale = [
+  {
+    "productId": 1,
+    "quantity": 10
+  },
+  {
+    "productId": 2,
+    "quantity": 50
+  }
+];
+
 module.exports = {
+  validProduct,
   invalidInput,
   invalidQuantity,
   productNotFound,
   newSale,
   requestNewSale,
   allSales,
-  saleById
+  saleById,
+  requestUpdateSale
 };

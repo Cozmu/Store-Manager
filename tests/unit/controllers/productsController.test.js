@@ -251,3 +251,56 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 30% das camadas d
     });
   });
 });
+
+describe('CONTROLLER - Desenvolva testes que cubram no mínimo 50%/60% das camadas da sua aplicação', function () {
+  describe('CONTROLLER -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 50%/60%', function () { 
+    it('Verifique se é possível buscar todos os produtos quando passa a busca vazia', async function () {
+      const req = { query: { q: '' } };
+      const res = {};
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'getProductBySearch')
+        .resolves({ type: null, message: allProducts });
+      
+      await productsController.listProductBySearch(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith([
+        {
+          "id": 1,
+          "name": "Martelo de Thor"
+        },
+        {
+          "id": 2,
+          "name": "Traje de encolhimento"
+        },
+        {
+          "id": 3,
+          "name": "Escudo do Capitão América"
+        }
+      ]);
+    });
+
+    it('Verifique se é possível buscar um produto pelo name', async function () {
+      const req = { query: { q: 'Martelo' } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'getProductBySearch')
+        .resolves({ type: null, message: [{ "id": 1, "name": "Martelo de Thor" }] });
+
+      await productsController.listProductBySearch(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith([{ "id": 1, "name": "Martelo de Thor" }]);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

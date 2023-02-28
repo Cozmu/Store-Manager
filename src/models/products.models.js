@@ -42,7 +42,16 @@ const deleteModelProduct = async (id) => {
   return affectedRows;
 };
 
+const findProductBySearch = async (name) => {
+  const [result] = await connection.execute(
+    'SELECT * FROM StoreManager.products WHERE name LIKE ?', // pq nao funciona colocando as % aqui ?
+    [`%${name}%`],
+  );
+  return result;
+};
+
 module.exports = {
+  findProductBySearch,
   insertProduct,
   deleteModelProduct,
   updateModelProtuct,

@@ -106,3 +106,17 @@ describe('MODEL - Desenvolva testes que cubram no mínimo 35% das camadas da sua
     });
   });
 });
+
+describe('MODEL - Desenvolva testes que cubram no mínimo 40% das camadas da sua aplicação', function () {
+  describe('MODEL - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 40%', function () {
+    it('Verifica se é possível atualizar a tabela de vendas', async function () {
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      const result = await salesModel.updateModelSale(10, 1, 1);
+      expect(result).to.be.equal(1);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

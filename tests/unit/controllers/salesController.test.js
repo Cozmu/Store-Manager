@@ -14,7 +14,9 @@ const {
   productNotFound,
   requestNewSale,
   allSales,
-  saleById
+  saleById,
+  requestUpdateSale,
+  updateSale
 } = require('./mocks/sales.controller.mocks');
 
 describe('CONTROLLER - Desenvolva testes que cubram no mínimo 15% das camadas da sua aplicação', function () {
@@ -220,6 +222,96 @@ describe('CONTROLLER - Desenvolva testes que cubram no mínimo 35% das camadas d
       await salesController.deleteControllerSale(req, res);
 
       expect(res.status).to.have.been.calledWith(204);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});
+
+describe('CONTROLLER - Desenvolva testes que cubram no mínimo 40% das camadas da sua aplicação', function () {
+  describe('CONTROLLER - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 40%', function () {
+
+    it('Verifique se não é possível realizar uma atualização em uma venda com o campo quantity menor ou igual a 0 (Zero)', async function () {
+      const req = { body: invalidQuantity, params: 1 };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'updateServiceSale')
+        .resolves({ type: 'INVALID_QUANTITY', message: '"quantity" must be greater than or equal to 1' });
+      
+      await salesController.updateControllerSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(422);
+      expect(res.json).to.have.been.calledWith({ message: '"quantity" must be greater than or equal to 1' });
+    });
+
+    it('Verifique se não é possível realizar uma atualização em uma venda sem os campos "productId" e "quantity"', async function () {
+      const req = { body: invalidInput, params: 1 };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'updateServiceSale')
+        .resolves({ type: 'INVALID_INPUT', message: '"productId" is required' });
+      
+      await salesController.updateControllerSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(400);
+      expect(res.json).to.have.been.calledWith({ message: '"productId" is required' });
+    });
+
+
+    it('Verifique se não é possível realizar uma atualização em uma venda com o campo productId inexistente', async function () {
+      const req = { body: productNotFound, params: 1 };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'updateServiceSale')
+        .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+      
+      await salesController.updateControllerSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+    });
+
+    it('Verifique se não é possível realizare uma atualização em uma venda inexistente', async function () { 
+      const req = { body: requestNewSale, params: 999 };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'updateServiceSale')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+      
+      await salesController.updateControllerSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+    });
+
+    it('Verifica se  é possível alterar uma venda com sucesso', async function () {
+      const req = { body: requestUpdateSale, params: 1 };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'updateServiceSale')
+        .resolves({ type: null, message: updateSale });
+      
+      await salesController.updateControllerSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(updateSale);
     });
 
     afterEach(function () {

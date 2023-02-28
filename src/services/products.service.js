@@ -43,7 +43,18 @@ const deleteServiceProduct = async (id) => {
   return { type: null, message: '' };
 };
 
+const getProductBySearch = async (name) => {
+  if (!name) {
+    const allProducts = await productsModel.findAllProducts();
+    return { type: null, message: allProducts };
+  }
+
+  const searchName = await productsModel.findProductBySearch(name);
+  return { type: null, message: searchName };
+};
+
 module.exports = {
+  getProductBySearch,
   deleteServiceProduct,
   registerProduct,
   getAllProducts,

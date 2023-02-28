@@ -66,3 +66,17 @@ describe('MODEL - Desenvolva testes que cubram no mínimo 30% das camadas da sua
     });
   });
 });
+
+describe('MODEL - Desenvolva testes que cubram no mínimo 50%/60% das camadas da sua aplicação', function () {
+  describe('MODEL -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 50%/60%', function () {
+    it('Verifique se é possível buscar um produto pelo name', async function () {
+      sinon.stub(connection, 'execute').resolves([[{ "id": 1, "name": "Martelo de Thor" }]]);
+      const result = await productsModel.findProductBySearch('Martelo');
+      expect(result).to.deep.equal([{ "id": 1, "name": "Martelo de Thor" }]);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

@@ -9,7 +9,9 @@ const {
   productNotFound,
   requestNewSale,
   allSales, 
-  saleById
+  saleById,
+  validProduct,
+  requestUpdateSale
 } = require('./mocks/sales.service.mock');
 
 
@@ -137,6 +139,53 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 35% das camadas da s
       const result = await salesService.deleteServiceSale(999);
       expect(result.type).to.be.equal('SALE_NOT_FOUND');
       expect(result.message).to.be.deep.equal('Sale not found');
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});
+
+
+describe('SERVICE - Desenvolva testes que cubram no mínimo 40% das camadas da sua aplicação', function () {
+  describe('SERVICE - Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 40%', function () {
+    it('Verifique se não é possível realizar operações em uma venda sem os campos "productId" e "quantity"', async function () {
+      const result = await salesService.updateServiceSale(1, invalidInput);
+
+      expect(result.type).to.be.equal('INVALID_INPUT');
+      expect(result.message).to.be.equal('"productId" is required');
+    });
+
+    it('Verifique se não é possível realizar uma atualização em uma venda com o campo quantity menor ou igual a 0 (Zero)', async function () {
+      const result = await salesService.updateServiceSale(1, invalidQuantity);
+
+      expect(result.type).to.be.equal('INVALID_QUANTITY');
+      expect(result.message).to.be.equal('"quantity" must be greater than or equal to 1');
+    });
+
+    it('Verifique se não é possível realizar uma atualização em uma venda com o campo productId inexistente', async function () {
+      const result = await salesService.updateServiceSale(1, productNotFound);
+
+      expect(result.type).to.be.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.be.equal('Product not found');
+    });
+
+    it('Verifique se não é possível realizar uma atualização em uma venda inexistente', async function () {
+      sinon.stub(productsModel, 'findProductById').resolves(validProduct);
+      const result = await salesService.updateServiceSale(999, requestUpdateSale);
+
+      expect(result.type).to.be.equal('SALE_NOT_FOUND');
+      expect(result.message).to.be.equal('Sale not found');
+    });
+
+    it('Verifique se é possível realizar uma atualização em uma venda', async function () {
+      sinon.stub(productsModel, 'findProductById').resolves(validProduct);
+      sinon.stub(salesModel, 'findSaleById').resolves([{ id: 1, date: '2023-02-22T17:57:01.000Z' }]);
+      const result = await salesService.updateServiceSale(1, requestUpdateSale);
+
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.be.deep.equal({ saleId: 1, itemsUpdated: requestUpdateSale });
     });
 
     afterEach(function () {

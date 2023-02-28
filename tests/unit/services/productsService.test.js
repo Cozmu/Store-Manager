@@ -132,3 +132,23 @@ describe('SERVICE - Desenvolva testes que cubram no mínimo 30% das camadas da s
     });
   });
 });
+
+describe('SERVICE - Desenvolva testes que cubram no mínimo 50%/60% das camadas da sua aplicação', function () {
+  describe('SERVICE -  Validando se a cobertura total das linhas e funções dos arquivos de CADA camada models, services e controllers é maior ou igual a 50%/60%', function () {
+    it('Verifique se é possível buscar todos os produtos quando passa a busca vazia!', async function () {
+      sinon.stub(productsModel, 'findAllProducts').resolves(allProducts);
+      const result = await productsService.getProductBySearch('');
+      expect(result.type).to.be.equal(null);
+    });
+
+    it('Verifique se é possível buscar um produto pelo name', async function () {
+      sinon.stub(productsModel, 'findProductBySearch').resolves([{ "id": 1, "name": "Martelo de Thor" }]);
+      const result = await productsService.getProductBySearch('Martelo');
+      expect(result.type).to.be.equal(null);
+    });
+
+    afterEach(function () {
+      sinon.restore();
+    });
+  });
+});

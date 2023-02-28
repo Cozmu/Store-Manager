@@ -13,6 +13,12 @@ const listProductById = async (req, res) => {
   return res.status(200).json(message);
 };
 
+const listProductBySearch = async (req, res) => {
+  const { q } = req.query;
+  const { message } = await productsService.getProductBySearch(q);
+  return res.status(200).json(message);
+};
+
 const registerProduct = async (req, res) => {
   const { name } = req.body;
   const { type, message } = await productsService.registerProduct(name);
@@ -38,6 +44,7 @@ const deleteControllerProduct = async (req, res) => {
 };
 
 module.exports = {
+  listProductBySearch,
   deleteControllerProduct,
   updateControllerProtuct,
   registerProduct,
